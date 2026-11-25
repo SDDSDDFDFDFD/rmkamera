@@ -1,1 +1,224 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>E-Absen RAME · Scanner V8</title>
+<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
+<style>
+:root{color-scheme:dark;font-family:system-ui,-apple-system,'Segoe UI',sans-serif}
+*{box-sizing:border-box}body{margin:0;background:#151719;color:#f9fafb;padding:18px;min-height:100vh}
+main{max-width:690px;margin:auto}.top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+h1{font-size:22px;margin:0 0 5px}.sub{font-size:13px;color:#aab5c2;margin:0 0 18px}
+.badge{border-radius:99px;background:#374151;color:#e5e7eb;padding:9px 12px;font-size:12px;font-weight:700}
+.badge.ok{background:#065f46;color:#d1fae5}.badge.err{background:#7f1d1d;color:#fee2e2}
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:13px}button,select,.filebtn{border:0;border-radius:12px;padding:12px 14px;font-size:14px;font-weight:700;cursor:pointer}
+button:disabled{opacity:.5;cursor:not-allowed}.primary{background:#c85a32;color:white}.secondary{background:#374151;color:white}
+select{background:#24292e;color:white;flex:1;min-width:130px;border:1px solid #424a52}
+.camera{position:relative;aspect-ratio:4/3;border-radius:18px;overflow:hidden;background:#020202;display:flex;align-items:center;justify-content:center}
+video{width:100%;height:100%;object-fit:cover}video[hidden]{display:none}.reticle{position:absolute;width:60%;aspect-ratio:1;border:3px solid #fff9;border-radius:22px;pointer-events:none;box-shadow:0 0 0 9999px #0005}.reticle.hit{border-color:#10b981;box-shadow:0 0 0 9999px #0005,0 0 35px #10b981aa}
+#hint{position:absolute;top:40%;width:90%;text-align:center;color:#e5e7eb;font-size:14px;line-height:1.6}.panel{background:#252a30;border-radius:18px;padding:16px;margin-top:14px}
+.panel h2{font-size:15px;margin:0 0 10px}.status{font-size:14px;font-weight:700;margin:6px 0}.detail{font-size:12px;color:#d1d5db;line-height:1.5}
+.manual{display:flex;gap:8px;margin-top:15px}input[type=text]{flex:1;min-width:0;background:#171b1e;border:1px solid #4b5563;border-radius:10px;color:white;padding:11px;font-size:13px}
+.help{color:#aab5c2;font-size:12px;line-height:1.6;margin:11px 0}.filebtn{display:inline-block;background:#f3f4f6;color:#1f2937;margin-top:12px}
+.notice{position:absolute;inset:0;z-index:5;display:flex;align-items:center;justify-content:center;padding:16px;background:#101820ee;text-align:center}.notice[hidden]{display:none}.notice.success{background:#064e3bee}.notice.warn{background:#78350fee}.notice.error{background:#7f1d1dee}.notice strong{display:block;font-size:clamp(22px,5vw,38px);margin:8px 0}.notice p{font-size:15px;margin:8px 0;white-space:pre-line}.notice .symbol{font-size:42px}.sound{display:flex;gap:8px;align-items:center;font-size:13px;margin:10px 0}#count{font-weight:900;color:#6ee7b7}canvas{display:none}
 
+.notice{position:fixed;inset:0;z-index:9999;padding:24px;background:#101820f5;overflow:auto}.notice.success{background:radial-gradient(ellipse at center,#15803d,#064e3b 75%)}.notice.warn{background:#78350f}.notice.error{background:#991b1b}.notice:not([hidden])>div{width:min(100%,850px);animation:resultPop .38s cubic-bezier(.2,.8,.2,1.2) both}.notice .symbol{display:grid;place-items:center;width:clamp(82px,20vmin,150px);aspect-ratio:1;margin:0 auto 18px;border:5px solid currentColor;border-radius:50%;font-size:clamp(48px,13vmin,100px);line-height:1;box-shadow:0 0 0 14px #ffffff18}.notice.success .symbol{animation:checkPulse .7s ease-out}.notice strong{font-size:clamp(32px,8vw,76px);line-height:1.05;overflow-wrap:anywhere}.notice.success strong{font-size:clamp(58px,18vw,150px);font-weight:950;letter-spacing:.02em}.notice p{font-size:clamp(16px,4vw,30px);overflow-wrap:anywhere}.notice #noticeName{font-weight:800}.notice #noticeDetail{font-size:clamp(14px,3vw,22px)}.notice .eyebrow{font-size:clamp(14px,3vw,24px);font-weight:800;letter-spacing:.12em}.notice .progress{height:7px;background:#ffffff36;border-radius:10px;overflow:hidden;margin:25px auto 12px;width:min(80%,420px)}.notice .progress span{display:block;height:100%;background:white;transform-origin:left;animation:countdown 3s linear forwards}.notice .next{font-size:14px;opacity:.9}@keyframes resultPop{from{opacity:0;transform:scale(.75)}to{opacity:1;transform:scale(1)}}@keyframes checkPulse{0%{transform:scale(.5);opacity:.5}70%{transform:scale(1.12)}100%{transform:scale(1);opacity:1}}@keyframes countdown{from{transform:scaleX(1)}to{transform:scaleX(0)}}@media(prefers-reduced-motion:reduce){.notice:not([hidden])>div,.notice.success .symbol,.notice .progress span{animation:none}}
+.notice{position:fixed!important;inset:0!important;z-index:2147483647!important;margin:0!important;width:100%;height:100%;}.notice[hidden]{display:none!important}
+body{padding:0;background:#080b0d}main{max-width:none;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;padding:12px;gap:10px}.top{align-items:center;flex-wrap:nowrap}.top h1{font-size:18px;margin:0}.sub{display:none}.controls{margin:0;flex-wrap:nowrap;align-items:center}.controls button{white-space:nowrap}.camera{flex:1;min-height:280px;aspect-ratio:auto;border-radius:14px}.camera video{position:absolute;inset:0;object-fit:contain}.reticle{width:min(60vw,55vh,420px);max-width:80%;max-height:85%}.panel{margin:0}.summary{display:flex;justify-content:space-between;gap:8px;align-items:center;font-size:12px;color:#cbd5e1}.summary #resultTitle{font-size:12px;margin:0}.summary #resultInfo{font-size:11px}.summary .detail{overflow-wrap:anywhere}.settings{position:fixed;inset:0;z-index:100;background:#0009;display:grid;place-items:center;padding:16px;overflow:auto}.settings[hidden]{display:none}.settingsBox{background:#252a30;border-radius:18px;padding:20px;width:min(100%,460px);max-height:90vh;overflow:auto}.settingsBox label{display:block;font-size:13px;margin:14px 0 6px}.settingsBox select{width:100%}.settingsBox .panel{padding:0;margin-top:18px}.settingsBox .manual{margin-top:8px}.settingsHead{display:flex;justify-content:space-between;align-items:center}.settingsHead h2{margin:0;font-size:18px}.iconBtn{padding:10px 13px;font-size:20px;line-height:1}.controls .primary{flex:1}.settingsBox .sound{display:flex}.notice{height:100dvh}.immersive main{position:fixed;inset:0;min-height:0;padding:8px;z-index:10}.immersive .camera{min-height:0}.immersive .summary #resultInfo{display:none}@media(max-width:480px){.controls button{padding:10px;font-size:12px}.top h1{font-size:16px}.badge{font-size:11px}.summary{font-size:11px}.camera{min-height:220px}}@media(max-height:450px){main{gap:5px;padding:6px}.camera{min-height:0}.controls button{padding:7px}.reticle{width:45vh}.summary{font-size:10px}}
+</style>
+</head>
+<body>
+<main>
+ <div class="top"><div><h1>Scan QR Siswa</h1><p class="sub">V8</p></div><span class="badge" id="badge">Belum aktif</span></div>
+ <div class="controls"><button class="primary" id="startBtn" type="button">▶ Mulai kamera</button><button class="secondary" id="stopBtn" type="button" disabled>■ Stop</button><button class="secondary iconBtn" id="fullBtn" type="button" aria-label="Layar penuh" title="Layar penuh">⛶</button><button class="secondary iconBtn" id="settingsBtn" type="button" aria-label="Pengaturan" title="Pengaturan">⚙</button></div>
+ <div class="camera"><video id="video" autoplay muted playsinline hidden></video><div class="reticle" id="reticle" hidden></div><div id="hint">Tekan <b>Mulai kamera</b></div><div id="notice" class="notice" role="status" aria-live="polite" hidden><div><div id="noticeSymbol" class="symbol"></div><div id="noticeEyebrow" class="eyebrow"></div><strong id="noticeTitle"></strong><p id="noticeName"></p><p id="noticeDetail"></p><div class="progress" aria-hidden="true"><span></span></div><div class="next">Kamera siap kembali dalam 3 detik</div></div></div></div>
+ <canvas id="work"></canvas>
+ <div class="summary"><div><div id="resultTitle" class="status">Siap scan</div><div id="resultInfo" class="detail"></div></div><div>Hadir: <span id="count">0</span></div></div>
+ <div id="settings" class="settings" hidden><div class="settingsBox"><div class="settingsHead"><h2>Pengaturan scanner · V8</h2><button id="closeSettings" class="secondary" type="button" aria-label="Tutup pengaturan">✕</button></div>
+ <label for="cameraSelect">Kamera</label><select id="cameraSelect"><option value="environment">Kamera belakang</option><option value="user">Kamera depan</option></select>
+ <label for="soundMode">Suara nama siswa</label><select id="soundMode"><option value="female">Perempuan (Cewek)</option><option value="male">Laki-laki (Cowok)</option><option value="silent">Senyap</option></select>
+ <p class="help" id="voiceInfo">Pilihan menggunakan suara Bahasa Indonesia yang tersedia. Jika suara khusus tidak tersedia, tinggi nada disesuaikan.</p>
+ <label for="volume">Volume</label><input id="volume" type="range" min="0" max="100" value="80" style="width:100%">
+ <button type="button" class="secondary" id="testNotice" style="margin-top:10px">Tes suara & animasi</button>
+ <div class="panel"><h2>Alternatif scan</h2><form id="manual" class="manual"><input id="manualCode" type="text" autocomplete="off" placeholder="Kode QR / USB"><button type="submit" class="primary">Kirim</button></form><label class="filebtn">Foto QR / galeri<input id="photo" type="file" accept="image/*" capture="environment" hidden></label><p class="help" id="connectionHint"></p></div></div></div>
+</main>
+<script>
+'use strict';
+// Hanya session acak dari aplikasi utama. Tidak ada username, password, token login, atau URL Google Sheets di sini.
+const params = new URLSearchParams(location.hash.slice(1));
+const SESSION = params.get('session') || '';
+const INITIAL_CAMERA = params.get('camera') || 'environment';
+const video = document.getElementById('video');
+const select = document.getElementById('cameraSelect');
+const badge = document.getElementById('badge');
+const hint = document.getElementById('hint');
+const resultTitle = document.getElementById('resultTitle');
+const resultInfo = document.getElementById('resultInfo');
+const work = document.getElementById('work');
+const ctx = work.getContext('2d', {willReadFrequently:true});
+let stream = null, running = false, timer = null, busy = false, detector = null, count = 0;
+let awaiting = new Set();
+document.body.appendChild(document.getElementById('notice'));
+let noticeTimer, replyTimer, holdUntil=0, lastSeen='', lastSeenAt=0;
+function announce(type,title,name,detail){
+ const n=document.getElementById('notice');n.hidden=true;n.style.display='none';n.className='notice '+type;void n.offsetWidth;n.hidden=false;n.style.display='flex';
+ document.getElementById('noticeSymbol').textContent=type==='success'?'✓':type==='warn'?'!':type==='error'?'✕':'•';
+ document.getElementById('noticeEyebrow').textContent=type==='success'?'ABSENSI BERHASIL':type==='warn'?'PERHATIAN':type==='error'?'ABSENSI BELUM BERHASIL':'';
+ document.getElementById('noticeTitle').textContent=type==='success'?'HADIR':title;
+ document.getElementById('noticeName').textContent=name||'';
+ document.getElementById('noticeDetail').textContent=detail||'';
+ clearTimeout(noticeTimer);holdUntil=Date.now()+3000;noticeTimer=setTimeout(()=>{n.hidden=true;n.style.display='none';},3000);
+ playSound(type,title,name);
+}
+const soundMode=document.getElementById('soundMode'), volume=document.getElementById('volume');
+const prefsKey='rame-scanner-v8';let prefs={};try{prefs=JSON.parse(localStorage.getItem(prefsKey)||localStorage.getItem('rame-scanner-v7')||'{}')||{}}catch(e){}
+if([...soundMode.options].some(o=>o.value===prefs.mode))soundMode.value=prefs.mode;
+if(Number.isFinite(prefs.volume))volume.value=prefs.volume;
+function savePrefs(){try{localStorage.setItem(prefsKey,JSON.stringify({mode:soundMode.value,volume:Number(volume.value)}))}catch(e){}}
+function unlockAudio(){if('speechSynthesis' in window)speechSynthesis.getVoices();}
+function chooseVoice(){
+ const voices=speechSynthesis.getVoices().filter(v=>/^id(?:[-_]|$)/i.test(v.lang));
+ const pattern=soundMode.value==='male'?/\b(male|andika|ardi|pria|laki-laki)\b/i:/\b(female|gadis|wanita|perempuan)\b/i;
+ const match=voices.find(v=>pattern.test(v.name));
+ return {voice:match||voices[0],matched:!!match};
+}
+function updateVoiceInfo(){const info=document.getElementById('voiceInfo');if(soundMode.value==='silent'){info.textContent='Notifikasi suara dinonaktifkan.';return;}if(!('speechSynthesis' in window)){info.textContent='Browser ini tidak mendukung pembaca suara.';return;}const v=chooseVoice();info.textContent=v.matched?'Suara perangkat: '+v.voice.name:'Suara khusus belum tersedia; menggunakan penyesuaian nada. Hasil bergantung pada perangkat.';}
+function playSound(type,title,name){if(!('speechSynthesis' in window))return;speechSynthesis.cancel();if(soundMode.value==='silent'||Number(volume.value)===0)return;try{const u=new SpeechSynthesisUtterance(type==='success'?(name||'Hadir'):type==='warn'?(name||'Sudah tercatat'):'QR ditolak');u.lang='id-ID';u.volume=Number(volume.value)/100;const v=chooseVoice();if(v.voice)u.voice=v.voice;u.pitch=v.matched?1:(soundMode.value==='male'?0.72:1.25);u.rate=1;speechSynthesis.speak(u);}catch(e){}}
+soundMode.addEventListener('change',()=>{savePrefs();updateVoiceInfo()});volume.addEventListener('input',savePrefs);
+if('speechSynthesis' in window)speechSynthesis.addEventListener('voiceschanged',updateVoiceInfo);updateVoiceInfo();
+const settings=document.getElementById('settings');document.getElementById('settingsBtn').onclick=()=>{unlockAudio();settings.hidden=false};document.getElementById('closeSettings').onclick=()=>{settings.hidden=true};
+const fullBtn=document.getElementById('fullBtn');function syncFull(){const active=!!document.fullscreenElement||document.body.classList.contains('immersive');fullBtn.textContent=active?'↙':'⛶';fullBtn.title=active?'Keluar layar penuh':'Layar penuh';fullBtn.setAttribute('aria-label',fullBtn.title)}
+fullBtn.onclick=async()=>{if(document.fullscreenElement){await document.exitFullscreen();}else if(document.body.classList.contains('immersive')){document.body.classList.remove('immersive')}else{try{if(!document.documentElement.requestFullscreen)throw Error();await document.documentElement.requestFullscreen()}catch(e){document.body.classList.add('immersive')}}syncFull()};document.addEventListener('fullscreenchange',syncFull);
+let cooldown = new Map();
+if (INITIAL_CAMERA === 'user') select.value = 'user';
+function notify(type, detail={}) {
+  if (!SESSION || !window.opener || window.opener.closed) return false;
+  try {window.opener.postMessage({type, session:SESSION, ...detail}, '*'); return true;}catch(e){return false;}
+}
+function setBadge(text, error=false, ok=false){badge.textContent=text;badge.className='badge'+(error?' err':ok?' ok':'');}
+function setResult(title, info, error=false){resultTitle.textContent=title;resultInfo.textContent=info; if(error) setBadge('Ada kendala',true);}
+function makeDetector(){
+ if(!('BarcodeDetector' in window))return;
+ BarcodeDetector.getSupportedFormats().then(f=>{
+  const formats=['qr_code','code_128','code_39','ean_13','ean_8'].filter(x=>f.includes(x));
+  if(formats.length) detector=new BarcodeDetector({formats});
+ }).catch(()=>{});
+}
+makeDetector();
+async function cameraStream(){
+ const selected=select.value;
+ const requests=[{video:{facingMode:{ideal:selected},width:{ideal:1280},height:{ideal:720}},audio:false},{video:{facingMode:selected},audio:false},{video:true,audio:false}];
+ let error;
+ for(const c of requests){try{return await navigator.mediaDevices.getUserMedia(c)}catch(e){error=e;if(e.name==='NotAllowedError'||e.name==='SecurityError')break;}}
+ throw error||new Error('Kamera tidak tersedia');
+}
+function stopCamera(){
+ running=false;if(timer){clearInterval(timer);timer=null;}
+ if(stream){stream.getTracks().forEach(t=>t.stop());stream=null;}
+ video.pause();video.srcObject=null;video.hidden=true;
+ document.getElementById('reticle').hidden=true;
+ hint.hidden=false;hint.textContent='Tekan Mulai kamera';
+ document.getElementById('startBtn').disabled=false;
+ document.getElementById('stopBtn').disabled=true;
+ setBadge('Kamera berhenti');
+}
+async function startCamera(){
+ unlockAudio();
+ stopCamera();
+ // Kamera dapat diuji langsung; pengiriman absensi tetap memerlukan sesi aplikasi.
+ if (!window.isSecureContext || !navigator.mediaDevices?.getUserMedia){
+  const msg='Buka halaman scanner lewat HTTPS pada browser Chrome/Edge/Safari modern, bukan alamat HTTP.';
+  setResult('Kamera tidak tersedia',msg,true);notify('SEKOLAHAPP_QR_CAM_ERROR',{message:msg});return;
+ }
+ setBadge('Meminta izin kamera...');document.getElementById('startBtn').disabled=true;
+ try{
+  stream=await cameraStream();
+  video.srcObject=stream;video.hidden=false;
+  await video.play();
+  running=true;
+  hint.hidden=true;
+  document.getElementById('reticle').hidden=false;
+  document.getElementById('startBtn').disabled=true;
+  document.getElementById('stopBtn').disabled=false;
+  setBadge('Kamera aktif',false,true);
+  notify('SEKOLAHAPP_QR_HELLO');
+  timer=setInterval(scanFrame,160);
+ }catch(e){
+  stopCamera();
+  const msg = e.name==='NotAllowedError'?'Akses kamera ditolak. Izinkan kamera pada pengaturan situs browser.':
+    e.name==='NotFoundError'?'Kamera tidak ditemukan.':
+    e.name==='NotReadableError'?'Kamera dipakai aplikasi lain. Tutup aplikasi kamera lain.':(e.message||String(e));
+  setResult('Kamera gagal dibuka',msg+' ('+(e.name||'Error')+')',true);notify('SEKOLAHAPP_QR_CAM_ERROR',{message:msg});
+ }
+}
+async function decodeFrame(){
+ if(!video.videoWidth||!video.videoHeight) return '';
+ if(detector){try{const found=await detector.detect(video);if(found.length&&found[0].rawValue)return String(found[0].rawValue).trim()}catch(e){}}
+ if(typeof jsQR!=='function')return '';
+ const max=900, scale=Math.min(1,max/Math.max(video.videoWidth,video.videoHeight));
+ work.width=Math.round(video.videoWidth*scale);work.height=Math.round(video.videoHeight*scale);
+ ctx.drawImage(video,0,0,work.width,work.height);
+ const img=ctx.getImageData(0,0,work.width,work.height);
+ const qr=jsQR(img.data,work.width,work.height,{inversionAttempts:'attemptBoth'});
+ return qr?.data ? String(qr.data).trim() : '';
+}
+async function scanFrame(){
+ if(!running||busy||!video.videoWidth||awaiting.size||Date.now()<holdUntil)return;
+ busy=true;
+ try{const code=await decodeFrame();if(code){const now=Date.now();const repeated=code===lastSeen && now-lastSeenAt<1000;lastSeen=code;lastSeenAt=now;if(!repeated)sendCode(code);}}catch(e){}finally{busy=false;}
+}
+function sendCode(raw){
+ const token=String(raw||'').trim();if(!token||awaiting.size||Date.now()<holdUntil)return;
+ const now=Date.now();if(awaiting.has(token)||now-(cooldown.get(token)||0)<4000)return;
+ cooldown.set(token,now);awaiting.add(token);
+ 
+ if(!notify('SEKOLAHAPP_QR_SCAN',{token})){
+  awaiting.delete(token);setResult('QR berhasil terbaca (mode uji)','Tidak disimpan ke Google Sheets. Untuk absensi, buka scanner dari aplikasi utama.');announce('warn','QR terbaca — mode uji','','Belum tercatat hadir. Buka scanner dari SekolahApp.');return;
+ }
+ setResult('Memverifikasi...','Kode QR dikirim ke aplikasi absensi.');setBadge('Menunggu konfirmasi server');
+ clearTimeout(replyTimer);replyTimer=setTimeout(()=>{if(awaiting.delete(token)){setResult('Belum ada konfirmasi','Periksa aplikasi utama dan Google Sheets.',true);announce('warn','Belum terkonfirmasi','','Periksa data sebelum memindai ulang.');}},30000);
+}
+window.addEventListener('message',event=>{
+ if(event.source!==window.opener || !event.data || event.data.session!==SESSION || !SESSION)return;
+ const d=event.data;
+ if(d.type==='SEKOLAHAPP_QR_ACK'&&d.token){return;}
+ if(d.type==='SEKOLAHAPP_QR_RESULT'){
+   clearTimeout(replyTimer);awaiting.clear();
+   const student=d.siswa||{};
+   const name=String(student.nama || '').trim();
+   const type=d.statusType;
+   const title=type==='success'?'HADIR — ABSENSI BERHASIL':d.title||'Hasil scan';
+   announce(type,title,name,d.message||'');
+   setResult(title,[name,d.message].filter(Boolean).join(' — '));
+   if(d.statusType==='success'){const frame=document.getElementById('reticle');frame.classList.add('hit');setTimeout(()=>frame.classList.remove('hit'),450);count++;document.getElementById('count').textContent=count;setBadge('Absensi tersimpan',false,true);}
+   else if(d.statusType==='warn'){setBadge('Sudah tercatat');}
+   else if(d.statusType==='error'){setBadge('QR ditolak',true);}
+ }
+ if(d.type==='SEKOLAHAPP_QR_SWITCH_CAM'&&['environment','user'].includes(d.camera)){
+   select.value=d.camera;startCamera();
+ }
+});
+document.getElementById('testNotice').addEventListener('click',()=>{if(awaiting.size)return;unlockAudio();settings.hidden=true;announce('success','Simulasi hadir','Ahmad Fauzi','Tes tampilan saja. Tidak disimpan ke Google Sheets.');document.getElementById('noticeEyebrow').textContent='SIMULASI NOTIFIKASI';});
+document.getElementById('startBtn').addEventListener('click',startCamera);
+document.getElementById('stopBtn').addEventListener('click',stopCamera);
+select.addEventListener('change',()=>{if(running)startCamera();});
+document.getElementById('manual').addEventListener('submit',e=>{e.preventDefault();sendCode(document.getElementById('manualCode').value);document.getElementById('manualCode').value='';});
+document.getElementById('photo').addEventListener('change',async e=>{
+ const file=e.target.files?.[0];e.target.value='';if(!file)return;
+ try{
+  const img=await createImageBitmap(file);
+  const scale=Math.min(1,1200/Math.max(img.width,img.height));work.width=Math.round(img.width*scale);work.height=Math.round(img.height*scale);
+  ctx.drawImage(img,0,0,work.width,work.height);img.close();
+  const data=ctx.getImageData(0,0,work.width,work.height);
+  const decoded=typeof jsQR==='function'?jsQR(data.data,data.width,data.height,{inversionAttempts:'attemptBoth'}):null;
+  if(decoded?.data)sendCode(decoded.data);else setResult('QR tidak terbaca','Ambil foto yang lebih jelas dan pastikan QR terlihat utuh.',true);
+ }catch(err){setResult('Gagal membaca foto',err.message||String(err),true);}
+});
+window.addEventListener('pagehide',()=>{notify('SEKOLAHAPP_QR_CLOSED');stopCamera();});
+if(SESSION && window.opener){document.getElementById('connectionHint').textContent='Terhubung ke jendela SekolahApp. Absensi diverifikasi dan disimpan oleh aplikasi utama.';}
+else{setResult('Mode uji kamera','Klik Mulai kamera. Hasil uji tidak disimpan ke Google Sheets.');document.getElementById('connectionHint').textContent='Mode uji: untuk mencatat absensi, buka scanner dari aplikasi SekolahApp.';}
+// Tidak otomatis meminta izin kamera sebelum ada tindakan langsung dari pengguna.
+</script>
+</body>
+</html>
