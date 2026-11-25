@@ -21,14 +21,17 @@ video{width:100%;height:100%;object-fit:cover}video[hidden]{display:none}.reticl
 .panel h2{font-size:15px;margin:0 0 10px}.status{font-size:14px;font-weight:700;margin:6px 0}.detail{font-size:12px;color:#d1d5db;line-height:1.5}
 .manual{display:flex;gap:8px;margin-top:15px}input[type=text]{flex:1;min-width:0;background:#171b1e;border:1px solid #4b5563;border-radius:10px;color:white;padding:11px;font-size:13px}
 .help{color:#aab5c2;font-size:12px;line-height:1.6;margin:11px 0}.filebtn{display:inline-block;background:#f3f4f6;color:#1f2937;margin-top:12px}
-#count{font-weight:900;color:#6ee7b7}canvas{display:none}
-</style>
+.notice{position:absolute;inset:0;z-index:5;display:flex;align-items:center;justify-content:center;padding:16px;background:#101820ee;text-align:center}.notice[hidden]{display:none}.notice.success{background:#064e3bee}.notice.warn{background:#78350fee}.notice.error{background:#7f1d1dee}.notice strong{display:block;font-size:clamp(22px,5vw,38px);margin:8px 0}.notice p{font-size:15px;margin:8px 0;white-space:pre-line}.notice .symbol{font-size:42px}.sound{display:flex;gap:8px;align-items:center;font-size:13px;margin:10px 0}#count{font-weight:900;color:#6ee7b7}canvas{display:none}
+
+.notice{position:fixed;inset:0;z-index:9999;padding:24px;background:#101820f5;overflow:auto}.notice.success{background:radial-gradient(ellipse at center,#15803d,#064e3b 75%)}.notice.warn{background:#78350f}.notice.error{background:#991b1b}.notice:not([hidden])>div{width:min(100%,850px);animation:resultPop .38s cubic-bezier(.2,.8,.2,1.2) both}.notice .symbol{display:grid;place-items:center;width:clamp(82px,20vmin,150px);aspect-ratio:1;margin:0 auto 18px;border:5px solid currentColor;border-radius:50%;font-size:clamp(48px,13vmin,100px);line-height:1;box-shadow:0 0 0 14px #ffffff18}.notice.success .symbol{animation:checkPulse .7s ease-out}.notice strong{font-size:clamp(32px,8vw,76px);line-height:1.05;overflow-wrap:anywhere}.notice.success strong{font-size:clamp(58px,18vw,150px);font-weight:950;letter-spacing:.02em}.notice p{font-size:clamp(16px,4vw,30px);overflow-wrap:anywhere}.notice #noticeName{font-weight:800}.notice #noticeDetail{font-size:clamp(14px,3vw,22px)}.notice .eyebrow{font-size:clamp(14px,3vw,24px);font-weight:800;letter-spacing:.12em}.notice .progress{height:7px;background:#ffffff36;border-radius:10px;overflow:hidden;margin:25px auto 12px;width:min(80%,420px)}.notice .progress span{display:block;height:100%;background:white;transform-origin:left;animation:countdown 3s linear forwards}.notice .next{font-size:14px;opacity:.9}@keyframes resultPop{from{opacity:0;transform:scale(.75)}to{opacity:1;transform:scale(1)}}@keyframes checkPulse{0%{transform:scale(.5);opacity:.5}70%{transform:scale(1.12)}100%{transform:scale(1);opacity:1}}@keyframes countdown{from{transform:scaleX(1)}to{transform:scaleX(0)}}@media(prefers-reduced-motion:reduce){.notice:not([hidden])>div,.notice.success .symbol,.notice .progress span{animation:none}}
+.notice{position:fixed!important;inset:0!important;z-index:2147483647!important;margin:0!important;width:100%;height:100%;}.notice[hidden]{display:none!important}</style>
 </head>
 <body>
 <main>
- <div class="top"><div><h1>Scan QR Siswa</h1><p class="sub">Kamera HTTPS di luar iframe Google Apps Script</p></div><span class="badge" id="badge">Belum aktif</span></div>
+ <div class="top"><div><h1>Scan QR Siswa</h1><p class="sub">Scanner V5 · Absensi siswa</p></div><span class="badge" id="badge">Belum aktif</span></div>
  <div class="controls"><select id="cameraSelect" aria-label="Pilih kamera"><option value="environment">Kamera belakang</option><option value="user">Kamera depan</option></select><button class="primary" id="startBtn" type="button">Mulai kamera</button><button class="secondary" id="stopBtn" type="button" disabled>Hentikan</button></div>
- <div class="camera"><video id="video" autoplay muted playsinline hidden></video><div class="reticle" id="reticle" hidden></div><div id="hint">Klik <b>Mulai kamera</b> dan izinkan akses kamera.</div></div>
+ <div class="camera"><video id="video" autoplay muted playsinline hidden></video><div class="reticle" id="reticle" hidden></div><div id="hint">Klik <b>Mulai kamera</b> dan izinkan akses kamera.</div><div id="notice" class="notice" role="status" aria-live="polite" hidden><div><div id="noticeSymbol" class="symbol"></div><div id="noticeEyebrow" class="eyebrow"></div><strong id="noticeTitle"></strong><p id="noticeName"></p><p id="noticeDetail"></p><div class="progress" aria-hidden="true"><span></span></div><div class="next">Kamera siap kembali dalam 3 detik</div></div></div></div>
+ <button type="button" class="secondary" id="testNotice">Tes animasi HADIR (simulasi)</button><label class="sound"><input type="checkbox" id="voice" checked> Notifikasi suara</label>
  <canvas id="work"></canvas>
  <div class="panel"><h2>Hasil pemindaian</h2><div id="resultTitle" class="status">Menunggu kode QR</div><div id="resultInfo" class="detail">Hasil QR dikirim ke aplikasi absensi. Login dan penyimpanan tetap di Google Apps Script.</div><div class="help">Berhasil dipindai pada sesi ini: <span id="count">0</span></div></div>
  <div class="panel"><h2>Alternatif tanpa kamera live</h2><form id="manual" class="manual"><input id="manualCode" type="text" autocomplete="off" placeholder="Tempel kode QR / scanner USB"><button type="submit" class="primary">Kirim</button></form><label class="filebtn">Ambil foto QR / galeri<input id="photo" type="file" accept="image/*" capture="environment" hidden></label><p class="help" id="connectionHint">Untuk mencatat absensi, buka halaman ini dari tombol Mulai Scan dalam aplikasi SekolahApp. Jangan gunakan halaman scanner secara terpisah.</p></div>
@@ -49,6 +52,18 @@ const work = document.getElementById('work');
 const ctx = work.getContext('2d', {willReadFrequently:true});
 let stream = null, running = false, timer = null, busy = false, detector = null, count = 0;
 let awaiting = new Set();
+document.body.appendChild(document.getElementById('notice'));
+let noticeTimer, replyTimer, holdUntil=0, lastSeen='', lastSeenAt=0;
+function announce(type,title,name,detail){
+ const n=document.getElementById('notice');n.hidden=true;n.style.display='none';n.className='notice '+type;void n.offsetWidth;n.hidden=false;n.style.display='flex';
+ document.getElementById('noticeSymbol').textContent=type==='success'?'✓':type==='warn'?'!':type==='error'?'✕':'•';
+ document.getElementById('noticeEyebrow').textContent=type==='success'?'ABSENSI BERHASIL':type==='warn'?'PERHATIAN':type==='error'?'ABSENSI BELUM BERHASIL':'';
+ document.getElementById('noticeTitle').textContent=type==='success'?'HADIR':title;
+ document.getElementById('noticeName').textContent=name||'';
+ document.getElementById('noticeDetail').textContent=detail||'';
+ clearTimeout(noticeTimer);holdUntil=Date.now()+3000;noticeTimer=setTimeout(()=>{n.hidden=true;n.style.display='none';},3000);
+ if(document.getElementById('voice').checked && 'speechSynthesis' in window){try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance([name,title].filter(Boolean).join('. '));u.lang='id-ID';speechSynthesis.speak(u);}catch(e){}}
+}
 let cooldown = new Map();
 if (INITIAL_CAMERA === 'user') select.value = 'user';
 function notify(type, detail={}) {
@@ -122,29 +137,34 @@ async function decodeFrame(){
  return qr?.data ? String(qr.data).trim() : '';
 }
 async function scanFrame(){
- if(!running||busy||!video.videoWidth)return;
+ if(!running||busy||!video.videoWidth||awaiting.size||Date.now()<holdUntil)return;
  busy=true;
- try{const code=await decodeFrame();if(code) sendCode(code);}catch(e){}finally{busy=false;}
+ try{const code=await decodeFrame();if(code){const now=Date.now();const repeated=code===lastSeen && now-lastSeenAt<1000;lastSeen=code;lastSeenAt=now;if(!repeated)sendCode(code);}}catch(e){}finally{busy=false;}
 }
 function sendCode(raw){
- const token=String(raw||'').trim();if(!token)return;
+ const token=String(raw||'').trim();if(!token||awaiting.size||Date.now()<holdUntil)return;
  const now=Date.now();if(awaiting.has(token)||now-(cooldown.get(token)||0)<4000)return;
  cooldown.set(token,now);awaiting.add(token);
- const frame=document.getElementById('reticle');frame.classList.add('hit');setTimeout(()=>frame.classList.remove('hit'),450);
+ 
  if(!notify('SEKOLAHAPP_QR_SCAN',{token})){
-  awaiting.delete(token);setResult('QR berhasil terbaca (mode uji)','Tidak disimpan ke Google Sheets. Untuk absensi, buka scanner dari aplikasi utama.');return;
+  awaiting.delete(token);setResult('QR berhasil terbaca (mode uji)','Tidak disimpan ke Google Sheets. Untuk absensi, buka scanner dari aplikasi utama.');announce('warn','QR terbaca — mode uji','','Belum tercatat hadir. Buka scanner dari SekolahApp.');return;
  }
- setResult('Memverifikasi...','Kode QR dikirim ke aplikasi absensi.');
- setTimeout(()=>awaiting.delete(token),9000);
+ setResult('Memverifikasi...','Kode QR dikirim ke aplikasi absensi.');setBadge('Menunggu konfirmasi server');
+ clearTimeout(replyTimer);replyTimer=setTimeout(()=>{if(awaiting.delete(token)){setResult('Belum ada konfirmasi','Periksa aplikasi utama dan Google Sheets.',true);announce('warn','Belum terkonfirmasi','','Periksa data sebelum memindai ulang.');}},30000);
 }
 window.addEventListener('message',event=>{
  if(event.source!==window.opener || !event.data || event.data.session!==SESSION || !SESSION)return;
  const d=event.data;
  if(d.type==='SEKOLAHAPP_QR_ACK'&&d.token){return;}
  if(d.type==='SEKOLAHAPP_QR_RESULT'){
-   awaiting.clear();
-   setResult(d.title||'Hasil scan',d.message||'');
-   if(d.statusType==='success'){count++;document.getElementById('count').textContent=count;setBadge('Absensi tersimpan',false,true);}
+   clearTimeout(replyTimer);awaiting.clear();
+   const student=d.siswa||{};
+   const name=[student.nama,student.kelas?'Kelas '+student.kelas:'',student.nis?'NIS '+student.nis:''].filter(Boolean).join(' · ');
+   const type=d.statusType;
+   const title=type==='success'?'HADIR — ABSENSI BERHASIL':d.title||'Hasil scan';
+   announce(type,title,name,d.message||'');
+   setResult(title,[name,d.message].filter(Boolean).join(' — '));
+   if(d.statusType==='success'){const frame=document.getElementById('reticle');frame.classList.add('hit');setTimeout(()=>frame.classList.remove('hit'),450);count++;document.getElementById('count').textContent=count;setBadge('Absensi tersimpan',false,true);}
    else if(d.statusType==='warn'){setBadge('Sudah tercatat');}
    else if(d.statusType==='error'){setBadge('QR ditolak',true);}
  }
@@ -152,6 +172,7 @@ window.addEventListener('message',event=>{
    select.value=d.camera;startCamera();
  }
 });
+document.getElementById('testNotice').addEventListener('click',()=>{if(awaiting.size)return;announce('success','Simulasi hadir','CONTOH — bukan absensi nyata','Tes tampilan saja. Tidak disimpan ke Google Sheets.');document.getElementById('noticeEyebrow').textContent='SIMULASI NOTIFIKASI';});
 document.getElementById('startBtn').addEventListener('click',startCamera);
 document.getElementById('stopBtn').addEventListener('click',stopCamera);
 select.addEventListener('change',()=>{if(running)startCamera();});
