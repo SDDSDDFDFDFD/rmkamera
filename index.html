@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>E-Absen RAME · Scanner V8</title>
+<title>E-Absen RAME · Scanner V18</title>
 <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
 <style>
 :root{color-scheme:dark;font-family:system-ui,-apple-system,'Segoe UI',sans-serif}
@@ -26,21 +26,47 @@ video{width:100%;height:100%;object-fit:cover}video[hidden]{display:none}.reticl
 .notice{position:fixed;inset:0;z-index:9999;padding:24px;background:#101820f5;overflow:auto}.notice.success{background:radial-gradient(ellipse at center,#15803d,#064e3b 75%)}.notice.warn{background:#78350f}.notice.error{background:#991b1b}.notice:not([hidden])>div{width:min(100%,850px);animation:resultPop .38s cubic-bezier(.2,.8,.2,1.2) both}.notice .symbol{display:grid;place-items:center;width:clamp(82px,20vmin,150px);aspect-ratio:1;margin:0 auto 18px;border:5px solid currentColor;border-radius:50%;font-size:clamp(48px,13vmin,100px);line-height:1;box-shadow:0 0 0 14px #ffffff18}.notice.success .symbol{animation:checkPulse .7s ease-out}.notice strong{font-size:clamp(32px,8vw,76px);line-height:1.05;overflow-wrap:anywhere}.notice.success strong{font-size:clamp(58px,18vw,150px);font-weight:950;letter-spacing:.02em}.notice p{font-size:clamp(16px,4vw,30px);overflow-wrap:anywhere}.notice #noticeName{font-weight:800}.notice #noticeDetail{font-size:clamp(14px,3vw,22px)}.notice .eyebrow{font-size:clamp(14px,3vw,24px);font-weight:800;letter-spacing:.12em}.notice .progress{height:7px;background:#ffffff36;border-radius:10px;overflow:hidden;margin:25px auto 12px;width:min(80%,420px)}.notice .progress span{display:block;height:100%;background:white;transform-origin:left;animation:countdown 3s linear forwards}.notice .next{font-size:14px;opacity:.9}@keyframes resultPop{from{opacity:0;transform:scale(.75)}to{opacity:1;transform:scale(1)}}@keyframes checkPulse{0%{transform:scale(.5);opacity:.5}70%{transform:scale(1.12)}100%{transform:scale(1);opacity:1}}@keyframes countdown{from{transform:scaleX(1)}to{transform:scaleX(0)}}@media(prefers-reduced-motion:reduce){.notice:not([hidden])>div,.notice.success .symbol,.notice .progress span{animation:none}}
 .notice{position:fixed!important;inset:0!important;z-index:2147483647!important;margin:0!important;width:100%;height:100%;}.notice[hidden]{display:none!important}
 body{padding:0;background:#080b0d}main{max-width:none;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;padding:12px;gap:10px}.top{align-items:center;flex-wrap:nowrap}.top h1{font-size:18px;margin:0}.sub{display:none}.controls{margin:0;flex-wrap:nowrap;align-items:center}.controls button{white-space:nowrap}.camera{flex:1;min-height:280px;aspect-ratio:auto;border-radius:14px}.camera video{position:absolute;inset:0;object-fit:contain}.reticle{width:min(60vw,55vh,420px);max-width:80%;max-height:85%}.panel{margin:0}.summary{display:flex;justify-content:space-between;gap:8px;align-items:center;font-size:12px;color:#cbd5e1}.summary #resultTitle{font-size:12px;margin:0}.summary #resultInfo{font-size:11px}.summary .detail{overflow-wrap:anywhere}.settings{position:fixed;inset:0;z-index:100;background:#0009;display:grid;place-items:center;padding:16px;overflow:auto}.settings[hidden]{display:none}.settingsBox{background:#252a30;border-radius:18px;padding:20px;width:min(100%,460px);max-height:90vh;overflow:auto}.settingsBox label{display:block;font-size:13px;margin:14px 0 6px}.settingsBox select{width:100%}.settingsBox .panel{padding:0;margin-top:18px}.settingsBox .manual{margin-top:8px}.settingsHead{display:flex;justify-content:space-between;align-items:center}.settingsHead h2{margin:0;font-size:18px}.iconBtn{padding:10px 13px;font-size:20px;line-height:1}.controls .primary{flex:1}.settingsBox .sound{display:flex}.notice{height:100dvh}.immersive main{position:fixed;inset:0;min-height:0;padding:8px;z-index:10}.immersive .camera{min-height:0}.immersive .summary #resultInfo{display:none}@media(max-width:480px){.controls button{padding:10px;font-size:12px}.top h1{font-size:16px}.badge{font-size:11px}.summary{font-size:11px}.camera{min-height:220px}}@media(max-height:450px){main{gap:5px;padding:6px}.camera{min-height:0}.controls button{padding:7px}.reticle{width:45vh}.summary{font-size:10px}}
-</style>
+/* Arah preview saja. Decoder selalu memakai frame asli kamera. */
+#video{transform:none!important;scale:1!important;direction:ltr;}
+#video.preview-flipped{transform:scaleX(-1)!important;}
+#previewInfo{margin:5px 0 0;}
+#flipBtn{min-width:44px;flex-shrink:0;}
+#flipBtn[aria-pressed="true"]{background:#065f46;}
+@media(max-width:480px){#flipBtn{min-width:34px;}}
+#scanPending{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);z-index:6;max-width:90%;width:max-content;background:#1e3a5f;color:#fff;padding:12px 18px;border:1px solid #93c5fd;border-radius:14px;text-align:center;font-weight:800;pointer-events:none;box-shadow:0 4px 20px #0008}#scanPending[hidden]{display:none}.reticle.pending{border-color:#60a5fa}.notice .progress span{animation-duration:var(--notice-duration,1500ms)}
+.controls #testNotice{white-space:nowrap;flex-shrink:0}.controls{flex-wrap:wrap}.voice-alert{margin:0;padding:8px 12px;border-radius:9px;background:#422b13;color:#fde68a;font-size:12px}.voice-alert[hidden]{display:none}.notice .notice-logo{display:block;width:clamp(44px,12vmin,88px);height:clamp(44px,12vmin,88px);object-fit:contain;background:white;border-radius:15px;padding:6px;margin:0 auto 12px;animation:resultPop .4s ease-out}.notice .notice-logo[hidden]{display:none}.notice.has-logo .symbol{width:clamp(50px,12vmin,90px);font-size:clamp(30px,8vmin,58px);margin-bottom:12px;border-width:3px;box-shadow:0 0 0 7px #ffffff18}.notice.has-logo .progress{margin-top:14px}.logo-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.logo-preview{width:64px;height:64px;background:white;object-fit:contain;border-radius:10px;padding:4px}.logo-preview[hidden]{display:none}.settingsBox .logo-row .filebtn{margin:0;font-size:13px}.notice.warn strong{font-size:clamp(38px,10vw,95px)}@media(max-height:500px){.notice{padding:8px}.notice .notice-logo{width:40px;height:40px;margin-bottom:6px}.notice.has-logo .symbol{width:44px;font-size:28px;margin-bottom:6px}.notice strong,.notice.success strong{font-size:clamp(36px,10vh,65px)}.notice p{margin:4px 0;font-size:16px}.notice .progress{margin:8px auto 4px}.notice .next{font-size:11px}}
+.greeting-box{border:1px solid #49515b;border-radius:12px;padding:12px;margin-top:18px}.greeting-box h3{margin:0 0 8px;font-size:15px}.greeting-box input[type=text]{width:100%}.greeting-box .check-label{display:flex;gap:8px;align-items:center}.greeting-box .help{margin:6px 0}.greeting-box button{margin-top:10px}.greeting-box [hidden]{display:none!important}.greeting-presets{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}.greeting-presets button{margin:0;padding:8px 12px;font-size:12px}#greetingPreview{white-space:pre-line}</style>
 </head>
 <body>
 <main>
- <div class="top"><div><h1>Scan QR Siswa</h1><p class="sub">V8</p></div><span class="badge" id="badge">Belum aktif</span></div>
- <div class="controls"><button class="primary" id="startBtn" type="button">▶ Mulai kamera</button><button class="secondary" id="stopBtn" type="button" disabled>■ Stop</button><button class="secondary iconBtn" id="fullBtn" type="button" aria-label="Layar penuh" title="Layar penuh">⛶</button><button class="secondary iconBtn" id="settingsBtn" type="button" aria-label="Pengaturan" title="Pengaturan">⚙</button></div>
- <div class="camera"><video id="video" autoplay muted playsinline hidden></video><div class="reticle" id="reticle" hidden></div><div id="hint">Tekan <b>Mulai kamera</b></div><div id="notice" class="notice" role="status" aria-live="polite" hidden><div><div id="noticeSymbol" class="symbol"></div><div id="noticeEyebrow" class="eyebrow"></div><strong id="noticeTitle"></strong><p id="noticeName"></p><p id="noticeDetail"></p><div class="progress" aria-hidden="true"><span></span></div><div class="next">Kamera siap kembali dalam 3 detik</div></div></div></div>
+ <div class="top"><div><h1>Scan QR Siswa <small style="font-size:10px;color:#aab5c2;font-weight:500">V18</small></h1><p class="sub">V18</p></div><span class="badge" id="badge">Belum aktif</span></div>
+ <div id="scanDateBanner" hidden style="padding:8px 12px;background:#78350f;color:#fff;border-radius:10px;font-weight:800;text-align:center;font-size:14px"></div>
+ <div class="controls"><button class="primary" id="startBtn" type="button">▶ Mulai kamera</button><button class="secondary" id="stopBtn" type="button" disabled>■ Stop</button><button class="secondary iconBtn" id="flipBtn" type="button" aria-label="Balik arah tampilan kamera" aria-pressed="false" title="Balik arah tampilan kamera">↔</button><button class="secondary iconBtn" id="fullBtn" type="button" aria-label="Layar penuh" title="Layar penuh">⛶</button><button class="secondary" id="testNotice" type="button" title="Tes suara dan animasi tanpa mencatat absensi">♪ Tes suara</button><button class="secondary iconBtn" id="settingsBtn" type="button" aria-label="Pengaturan" title="Pengaturan">⚙</button></div>
+ <p id="voiceAlert" class="voice-alert" role="status" hidden></p>
+ <div class="camera"><video id="video" autoplay muted playsinline hidden></video><div class="reticle" id="reticle" hidden></div><div id="hint">Tekan <b>Mulai kamera</b></div><div id="scanPending" role="status" hidden>QR terbaca • Memverifikasi...</div><div id="notice" class="notice" role="status" aria-live="polite" hidden><div><img id="noticeLogo" class="notice-logo" alt="Logo sekolah" hidden><div id="noticeSymbol" class="symbol"></div><div id="noticeEyebrow" class="eyebrow"></div><strong id="noticeTitle"></strong><p id="noticeName"></p><p id="noticeDetail"></p><div class="progress" aria-hidden="true"><span></span></div><div class="next">Kamera siap kembali sebentar lagi</div></div></div></div>
  <canvas id="work"></canvas>
  <div class="summary"><div><div id="resultTitle" class="status">Siap scan</div><div id="resultInfo" class="detail"></div></div><div>Hadir: <span id="count">0</span></div></div>
- <div id="settings" class="settings" hidden><div class="settingsBox"><div class="settingsHead"><h2>Pengaturan scanner · V8</h2><button id="closeSettings" class="secondary" type="button" aria-label="Tutup pengaturan">✕</button></div>
- <label for="cameraSelect">Kamera</label><select id="cameraSelect"><option value="environment">Kamera belakang</option><option value="user">Kamera depan</option></select>
- <label for="soundMode">Suara nama siswa</label><select id="soundMode"><option value="female">Perempuan (Cewek)</option><option value="male">Laki-laki (Cowok)</option><option value="silent">Senyap</option></select>
- <p class="help" id="voiceInfo">Pilihan menggunakan suara Bahasa Indonesia yang tersedia. Jika suara khusus tidak tersedia, tinggi nada disesuaikan.</p>
+ <div id="settings" class="settings" hidden><div class="settingsBox"><div class="settingsHead"><h2>Pengaturan scanner · V18</h2><button id="closeSettings" class="secondary" type="button" aria-label="Tutup pengaturan">✕</button></div>
+ <label for="cameraSelect">Kamera</label><select id="cameraSelect"><option value="user" selected>Kamera depan (default)</option><option value="environment">Kamera belakang</option></select>
+ <label for="previewMode">Arah tampilan kamera</label><select id="previewMode"><option value="auto">Otomatis (depan seperti cermin, belakang normal)</option><option value="normal">Normal (teks kartu terbaca normal)</option><option value="flipped">Dibalik kiri-kanan (seperti cermin)</option></select>
+ <p class="help" id="previewInfo" aria-live="polite"></p>
+ <label for="soundMode">Suara notifikasi absensi</label><select id="soundMode"><option value="female">Perempuan (Cewek)</option><option value="male">Laki-laki (Cowok)</option><option value="silent">Senyap</option></select>
+ <p class="help" id="voiceInfo" role="status" aria-live="polite">Mendeteksi suara Indonesia pada perangkat.</p>
+ <label for="nativeVoice">Pilih suara Indonesia asli (opsional)</label><select id="nativeVoice"><option value="">Otomatis sesuai pilihan</option></select><p class="help">Mode laki-laki hanya menggunakan suara Indonesia yang teridentifikasi sebagai pria dari nama suara. Jika tidak tersedia, pasang suara pria Indonesia di perangkat lalu buka ulang browser. Gunakan Tes suara di layar utama.</p><button type="button" class="secondary" id="reloadVoices">Muat ulang daftar suara</button>
  <label for="volume">Volume</label><input id="volume" type="range" min="0" max="100" value="80" style="width:100%">
- <button type="button" class="secondary" id="testNotice" style="margin-top:10px">Tes suara & animasi</button>
+ <section class="greeting-box"><h3>Sapaan penyemangat siswa</h3>
+ <p class="help">Satu pengaturan berlaku untuk seluruh siswa. Nama siswa diambil otomatis saat scan QR berhasil.</p>
+ <label class="check-label"><input type="checkbox" id="customGreeting"> Aktifkan sapaan penyemangat</label>
+ <div id="customFields" hidden>
+ <label for="extraGreeting">Kata penyemangat</label><input type="text" id="extraGreeting" maxlength="60" placeholder="hebat" autocomplete="off">
+ <div class="greeting-presets" aria-label="Pilihan kata penyemangat"><button type="button" class="secondary" data-greeting="baik">Baik</button><button type="button" class="secondary" data-greeting="hebat">Hebat</button><button type="button" class="secondary" data-greeting="pintar">Pintar</button><button type="button" class="secondary" data-greeting="rajin">Rajin</button><button type="button" class="secondary" data-greeting="luar biasa">Luar biasa</button></div>
+ <p class="help">Cukup isi kata tambahan. Nama siswa dan kata hadir ditambahkan otomatis.</p>
+ </div>
+ <p class="help" id="greetingPreview" aria-live="polite"></p>
+ <p class="help">Scan ulang tetap menyebut nama siswa dan “sudah hadir”. Tes suara menggunakan contoh tetap, tanpa sapaan tambahan.</p>
+ <button type="button" class="secondary" id="resetGreeting">Kembalikan sapaan default</button></section>
+ <label for="noticeDuration">Durasi notifikasi HADIR</label><select id="noticeDuration"><option value="1500">1,5 detik (cepat)</option><option value="2000">2 detik</option><option value="3000">3 detik</option></select><p class="help" id="latencyInfo">Waktu konfirmasi terakhir: belum ada scan.</p>
+ <label>Logo animasi HADIR / SUDAH HADIR</label><div class="logo-row"><img id="logoPreview" class="logo-preview" alt="Pratinjau logo" hidden><label class="filebtn">Unggah logo<input id="logoFile" type="file" accept="image/png,image/jpeg,image/webp" hidden></label><button type="button" class="secondary" id="removeLogo">Hapus logo</button></div><p class="help" id="logoInfo" role="status">Logo disimpan di browser perangkat ini. Gunakan PNG, JPG atau WebP.</p>
  <div class="panel"><h2>Alternatif scan</h2><form id="manual" class="manual"><input id="manualCode" type="text" autocomplete="off" placeholder="Kode QR / USB"><button type="submit" class="primary">Kirim</button></form><label class="filebtn">Foto QR / galeri<input id="photo" type="file" accept="image/*" capture="environment" hidden></label><p class="help" id="connectionHint"></p></div></div></div>
 </main>
 <script>
@@ -48,7 +74,13 @@ body{padding:0;background:#080b0d}main{max-width:none;min-height:100vh;min-heigh
 // Hanya session acak dari aplikasi utama. Tidak ada username, password, token login, atau URL Google Sheets di sini.
 const params = new URLSearchParams(location.hash.slice(1));
 const SESSION = params.get('session') || '';
-const INITIAL_CAMERA = params.get('camera') || 'environment';
+const INITIAL_CAMERA = params.get('camera') === 'environment' ? 'environment' : 'user';
+const TANGGAL_SCAN = params.get('tanggal') || '';
+const LAMPAU = params.get('lampau') === '1';
+const dateBanner=document.getElementById('scanDateBanner');
+if(SESSION && /^\d{4}-\d{2}-\d{2}$/.test(TANGGAL_SCAN)){
+ const d=new Date(TANGGAL_SCAN+'T12:00:00');dateBanner.hidden=false;dateBanner.textContent=(LAMPAU?'SCAN TANGGAL LAMPAU — ':'SCAN HARI INI — ')+d.toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'});if(!LAMPAU)dateBanner.style.background='#064e3b';
+}
 const video = document.getElementById('video');
 const select = document.getElementById('cameraSelect');
 const badge = document.getElementById('badge');
@@ -60,38 +92,155 @@ const ctx = work.getContext('2d', {willReadFrequently:true});
 let stream = null, running = false, timer = null, busy = false, detector = null, count = 0;
 let awaiting = new Set();
 document.body.appendChild(document.getElementById('notice'));
-let noticeTimer, replyTimer, holdUntil=0, lastSeen='', lastSeenAt=0;
-function announce(type,title,name,detail){
- const n=document.getElementById('notice');n.hidden=true;n.style.display='none';n.className='notice '+type;void n.offsetWidth;n.hidden=false;n.style.display='flex';
+let noticeTimer, replyTimer, holdUntil=0, lastSeen='', lastSeenAt=0, submittedAt=0;
+function showPending(on){document.getElementById('scanPending').hidden=!on;document.getElementById('reticle').classList.toggle('pending',on);document.getElementById('testNotice').disabled=on;}
+function isAlreadyPresent(type,title){return type==='warn'&&/^(sudah\s+(tercatat\s+)?hadir)\b/i.test(String(title||'').trim());}
+function announce(type,title,name,detail,simulation=false){
+ const n=document.getElementById('notice');n.hidden=true;n.style.display='none';n.className='notice '+type;const showLogo=Boolean(logoData)&&(type==='success'||isAlreadyPresent(type,title));document.getElementById('noticeLogo').hidden=!showLogo;n.classList.toggle('has-logo',showLogo);void n.offsetWidth;n.hidden=false;n.style.display='flex';
  document.getElementById('noticeSymbol').textContent=type==='success'?'✓':type==='warn'?'!':type==='error'?'✕':'•';
- document.getElementById('noticeEyebrow').textContent=type==='success'?'ABSENSI BERHASIL':type==='warn'?'PERHATIAN':type==='error'?'ABSENSI BELUM BERHASIL':'';
- document.getElementById('noticeTitle').textContent=type==='success'?'HADIR':title;
+ document.getElementById('noticeEyebrow').textContent=simulation?'SIMULASI NOTIFIKASI':type==='success'?'ABSENSI BERHASIL':type==='warn'?'PERHATIAN':type==='error'?'ABSENSI BELUM BERHASIL':'';
+ document.getElementById('noticeTitle').textContent=type==='success'?'HADIR':isAlreadyPresent(type,title)?'SUDAH HADIR':title;
  document.getElementById('noticeName').textContent=name||'';
  document.getElementById('noticeDetail').textContent=detail||'';
- clearTimeout(noticeTimer);holdUntil=Date.now()+3000;noticeTimer=setTimeout(()=>{n.hidden=true;n.style.display='none';},3000);
- playSound(type,title,name);
+ const duration=type==='success'?Number(document.getElementById('noticeDuration').value)||1500:2000; n.style.setProperty('--notice-duration',duration+'ms');clearTimeout(noticeTimer);holdUntil=Date.now()+duration;noticeTimer=setTimeout(()=>{n.hidden=true;n.style.display='none';},duration);
+ playSound(type,title,name,simulation);
 }
 const soundMode=document.getElementById('soundMode'), volume=document.getElementById('volume');
-const prefsKey='rame-scanner-v8';let prefs={};try{prefs=JSON.parse(localStorage.getItem(prefsKey)||localStorage.getItem('rame-scanner-v7')||'{}')||{}}catch(e){}
+const nativeVoice=document.getElementById('nativeVoice');
+const prefsKey='rame-scanner-v12';let prefs={};try{prefs=JSON.parse(localStorage.getItem(prefsKey)||localStorage.getItem('rame-scanner-v11')||localStorage.getItem('rame-scanner-v10')||localStorage.getItem('rame-scanner-v9')||localStorage.getItem('rame-scanner-v8')||localStorage.getItem('rame-scanner-v7')||'{}')||{}}catch(e){}
+const voiceByMode={female:'',male:'',...(prefs.voiceByMode||{})};
+const logoKey='rame-scanner-logo-v14';let logoData='';try{const stored=localStorage.getItem(logoKey)||'';if(/^data:image\/(png|jpeg|webp);base64,/i.test(stored))logoData=stored;}catch(e){}
+function renderLogo(){for(const id of ['logoPreview','noticeLogo']){const el=document.getElementById(id);if(logoData){el.src=logoData;}else{el.removeAttribute('src');}el.hidden=!logoData;}document.getElementById('removeLogo').disabled=!logoData;}
+function persistLogo(value){logoData=value;renderLogo();const info=document.getElementById('logoInfo');try{if(value)localStorage.setItem(logoKey,value);else localStorage.removeItem(logoKey);info.textContent=value?'Logo tersimpan di perangkat ini.':'Logo dihapus.';}catch(e){info.textContent='Perubahan logo berlaku untuk sesi ini saja; penyimpanan browser gagal.';}}
+renderLogo();
+document.getElementById('logoFile').addEventListener('change',async e=>{const file=e.target.files?.[0];e.target.value='';if(!file)return;const info=document.getElementById('logoInfo');if(!/^image\/(png|jpeg|webp)$/.test(file.type)||file.size>10*1024*1024){info.textContent='Pilih PNG, JPG atau WebP maksimal 10 MB.';return;}const url=URL.createObjectURL(file);try{const img=new Image();await new Promise((resolve,reject)=>{img.onload=resolve;img.onerror=reject;img.src=url;});const scale=Math.min(1,320/Math.max(img.naturalWidth,img.naturalHeight));const c=document.createElement('canvas');c.width=Math.max(1,Math.round(img.naturalWidth*scale));c.height=Math.max(1,Math.round(img.naturalHeight*scale));c.getContext('2d').drawImage(img,0,0,c.width,c.height);persistLogo(c.toDataURL('image/png'));}catch(err){info.textContent='Logo gagal dibaca. Pilih gambar lain.';}finally{URL.revokeObjectURL(url);}});
+document.getElementById('removeLogo').onclick=()=>persistLogo('');
 if([...soundMode.options].some(o=>o.value===prefs.mode))soundMode.value=prefs.mode;
 if(Number.isFinite(prefs.volume))volume.value=prefs.volume;
-function savePrefs(){try{localStorage.setItem(prefsKey,JSON.stringify({mode:soundMode.value,volume:Number(volume.value)}))}catch(e){}}
-function unlockAudio(){if('speechSynthesis' in window)speechSynthesis.getVoices();}
-function chooseVoice(){
- const voices=speechSynthesis.getVoices().filter(v=>/^id(?:[-_]|$)/i.test(v.lang));
- const pattern=soundMode.value==='male'?/\b(male|andika|ardi|pria|laki-laki)\b/i:/\b(female|gadis|wanita|perempuan)\b/i;
- const match=voices.find(v=>pattern.test(v.name));
- return {voice:match||voices[0],matched:!!match};
+const noticeDuration=document.getElementById('noticeDuration');if(['1500','2000','3000'].includes(String(prefs.noticeDuration)))noticeDuration.value=String(prefs.noticeDuration);noticeDuration.addEventListener('change',savePrefs);
+const previewMode=document.getElementById('previewMode');
+const flipBtn=document.getElementById('flipBtn');
+const previewByCamera={environment:'auto',user:'auto'};
+for(const facing of ['environment','user']){
+ const saved=prefs.previewByCamera?.[facing];
+ if(['auto','normal','flipped'].includes(saved))previewByCamera[facing]=saved;
 }
-function updateVoiceInfo(){const info=document.getElementById('voiceInfo');if(soundMode.value==='silent'){info.textContent='Notifikasi suara dinonaktifkan.';return;}if(!('speechSynthesis' in window)){info.textContent='Browser ini tidak mendukung pembaca suara.';return;}const v=chooseVoice();info.textContent=v.matched?'Suara perangkat: '+v.voice.name:'Suara khusus belum tersedia; menggunakan penyesuaian nada. Hasil bergantung pada perangkat.';}
-function playSound(type,title,name){if(!('speechSynthesis' in window))return;speechSynthesis.cancel();if(soundMode.value==='silent'||Number(volume.value)===0)return;try{const u=new SpeechSynthesisUtterance(type==='success'?(name||'Hadir'):type==='warn'?(name||'Sudah tercatat'):'QR ditolak');u.lang='id-ID';u.volume=Number(volume.value)/100;const v=chooseVoice();if(v.voice)u.voice=v.voice;u.pitch=v.matched?1:(soundMode.value==='male'?0.72:1.25);u.rate=1;speechSynthesis.speak(u);}catch(e){}}
-soundMode.addEventListener('change',()=>{savePrefs();updateVoiceInfo()});volume.addEventListener('input',savePrefs);
-if('speechSynthesis' in window)speechSynthesis.addEventListener('voiceschanged',updateVoiceInfo);updateVoiceInfo();
-const settings=document.getElementById('settings');document.getElementById('settingsBtn').onclick=()=>{unlockAudio();settings.hidden=false};document.getElementById('closeSettings').onclick=()=>{settings.hidden=true};
+function savePrefs(){try{localStorage.setItem(prefsKey,JSON.stringify({mode:soundMode.value,volume:Number(volume.value),voiceByMode,previewByCamera,noticeDuration:Number(noticeDuration.value)}))}catch(e){}}
+function currentFacing(){
+ const actual=stream?.getVideoTracks()[0]?.getSettings?.().facingMode;
+ return actual==='user'||actual==='environment'?actual:(select.value==='user'?'user':'environment');
+}
+function shouldFlip(facing,mode){return mode==='flipped'||(mode==='auto'&&facing==='user');}
+function applyPreview(){
+ const facing=currentFacing(),mode=previewByCamera[facing],flipped=shouldFlip(facing,mode);
+ video.classList.toggle('preview-flipped',flipped);
+ previewMode.value=mode;
+ flipBtn.setAttribute('aria-pressed',String(flipped));
+ flipBtn.title='Balik arah kamera (sekarang '+(flipped?'seperti cermin':'normal')+')';
+ flipBtn.setAttribute('aria-label',flipBtn.title);
+ document.getElementById('previewInfo').textContent=(flipped?'Seperti cermin: gerakan siswa biasanya lebih mudah diikuti saat menghadap kamera.':'Normal: tulisan pada kartu tampil tidak terbalik.')+' Tekan ↔ jika arah gerakan terasa salah. Hanya tampilan yang berubah, bukan pembacaan QR.';
+}
+previewMode.addEventListener('change',()=>{previewByCamera[currentFacing()]=previewMode.value;applyPreview();savePrefs()});
+flipBtn.addEventListener('click',()=>{const facing=currentFacing();previewByCamera[facing]=shouldFlip(facing,previewByCamera[facing])?'normal':'flipped';applyPreview();savePrefs()});
+// Browser tidak menyediakan atribut gender; gunakan nama voice yang dikenal,
+// atau pilihan manual yang telah diuji pengguna. Jangan menebak suara pria.
+function unlockAudio(){if('speechSynthesis' in window)speechSynthesis.getVoices();}
+function indonesianVoices(){return 'speechSynthesis' in window?speechSynthesis.getVoices().filter(v=>/^id(?:[-_]|$)/i.test(v.lang)):[];}
+function voiceGender(v){
+ const n=v.name+' '+v.voiceURI;
+ if(/\b(female|gadis|wanita|perempuan|dewi|gadisneural)\b/i.test(n))return 'female';
+ if(/\b(male|andika|ardi|pria|laki-laki|ardineural|andikaneural)\b/i.test(n))return 'male';
+ return 'unknown';
+}
+function allowedVoices(mode){return indonesianVoices().filter(v=>voiceGender(v)===mode||(mode==='female'&&voiceGender(v)==='unknown'));}
+function refreshVoices(){
+ const mode=soundMode.value, previous=voiceByMode[mode]||'';
+ nativeVoice.replaceChildren(new Option('Otomatis sesuai pilihan',''));
+ for(const v of allowedVoices(mode)){
+  const kind=voiceGender(v);
+  nativeVoice.add(new Option(v.name+' ('+(kind==='male'?'pria':kind==='female'?'wanita':'jenis belum diketahui — tes dulu')+')',v.voiceURI));
+ }
+ nativeVoice.value=[...nativeVoice.options].some(o=>o.value===previous)?previous:'';
+ updateVoiceInfo();
+}
+function chooseVoice(){
+ const mode=soundMode.value, voices=allowedVoices(mode);
+ if(mode==='silent')return {};
+ const explicit=voices.find(v=>v.voiceURI===nativeVoice.value);
+ if(explicit)return {voice:explicit,manual:true,matched:voiceGender(explicit)===mode};
+ const match=voices.find(v=>voiceGender(v)===mode);
+ if(match)return {voice:match,matched:true};
+ // Pertahankan suara bawaan Indonesia di mode wanita saja, dengan label jujur.
+ if(mode==='female')return {voice:voices[0],matched:false};
+ return {};
+}
+function voiceAlert(message=''){const a=document.getElementById('voiceAlert');a.textContent=message;a.hidden=!message;}
+function updateVoiceInfo(){
+ const info=document.getElementById('voiceInfo');nativeVoice.disabled=soundMode.value==='silent';voiceAlert();
+ if(soundMode.value==='silent'){info.textContent='Notifikasi suara dinonaktifkan.';return;}
+ if(!('speechSynthesis' in window)){info.textContent='Browser ini tidak mendukung pembaca suara.';voiceAlert(info.textContent);return;}
+ const v=chooseVoice();
+ if(v.voice){info.textContent='Suara aktif: '+v.voice.name+(v.matched?' (teridentifikasi dari nama suara).':' (jenis belum terverifikasi; silakan tes).');return;}
+ info.textContent=soundMode.value==='male'?'Suara pria Indonesia belum tersedia di browser ini. Pasang suara pria Indonesia (misalnya Andika jika tersedia), atau gunakan perangkat/browser yang menyediakannya. Suara perempuan tidak akan digunakan.':'Suara Indonesia belum terdeteksi. Pasang suara Indonesia pada perangkat atau gunakan browser yang mendukungnya.';
+ voiceAlert(soundMode.value==='male'?'Suara pria belum tersedia. Buka pengaturan suara.':info.textContent);
+}
+const greetingKey='rame-scanner-greeting-v18';
+const greetingDefaults={customGreeting:false,extraGreeting:'hebat'};
+const TEST_NAME='Kamal Ganteng';
+let greetingPrefs={...greetingDefaults};
+try{
+ const current=localStorage.getItem(greetingKey);
+ const g=JSON.parse(current||localStorage.getItem('rame-scanner-greeting-v15')||'{}')||{};
+ // Pertahankan sapaan umum lama saja; jangan mengaktifkan sapaan khusus gender sebagai sapaan umum.
+ if(current||g.greetingMode==='all'){
+  if(typeof g.customGreeting==='boolean')greetingPrefs.customGreeting=g.customGreeting;
+  if(typeof g.extraGreeting==='string')greetingPrefs.extraGreeting=g.extraGreeting.slice(0,60);
+ }
+}catch(e){}
+function cleanExtra(value){return String(value||'').slice(0,60).trim().replace(/\s+/g,' ').replace(/[,.!?;:]+$/g,'').trim().replace(/(?:^|\s)hadir$/i,'').trim();}
+function loadGreetingFields(){document.getElementById('customGreeting').checked=greetingPrefs.customGreeting;document.getElementById('extraGreeting').value=greetingPrefs.extraGreeting;updateGreetingPreview();}
+function updateGreetingPreview(){
+ document.getElementById('customFields').hidden=!greetingPrefs.customGreeting;
+ document.getElementById('greetingPreview').textContent='Contoh saat scan berhasil:\n'+['Dinda','Kamal','Aisyah'].map(name=>spokenMessage('success','Hadir',name)).join('\n');
+}
+function saveGreetingFields(){
+ greetingPrefs={customGreeting:document.getElementById('customGreeting').checked,extraGreeting:document.getElementById('extraGreeting').value.slice(0,60)};
+ try{localStorage.setItem(greetingKey,JSON.stringify(greetingPrefs));}catch(e){}updateGreetingPreview();
+}
+document.getElementById('customGreeting').addEventListener('change',saveGreetingFields);
+document.getElementById('extraGreeting').addEventListener('input',saveGreetingFields);
+for(const el of document.querySelectorAll('[data-greeting]'))el.addEventListener('click',()=>{document.getElementById('extraGreeting').value=el.dataset.greeting;saveGreetingFields();});
+document.getElementById('resetGreeting').onclick=()=>{greetingPrefs={...greetingDefaults};loadGreetingFields();saveGreetingFields();};loadGreetingFields();
+function spokenMessage(type,title,name,simulation=false){
+ const student=String(name||'').trim();
+ if(type==='success'){
+  if(!student)return 'Hadir';
+  const extra=!simulation&&greetingPrefs.customGreeting?cleanExtra(greetingPrefs.extraGreeting):'';
+  return extra?student+' '+extra+' hadir.':student+', hadir.';
+ }
+ if(isAlreadyPresent(type,title))return student?student+', sudah hadir.':'Sudah hadir';
+ if(type==='warn'&&/terkonfirmasi guru/i.test(title))return student?student+', status sudah dikonfirmasi guru':'Status sudah dikonfirmasi guru';
+ if(type==='error')return 'QR ditolak';
+ return ''; // Jangan mengucapkan hadir untuk QR uji, timeout atau peringatan lain.
+}
+function playSound(type,title,name,simulation=false){
+ if(!('speechSynthesis' in window))return;
+ if(soundMode.value==='silent'||Number(volume.value)===0)return;
+ const text=spokenMessage(type,title,name,simulation);if(!text)return;
+ const v=chooseVoice();if(!v.voice){updateVoiceInfo();return;}
+ try{if(simulation)speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang=v.voice.lang;u.voice=v.voice;u.volume=Number(volume.value)/100;u.pitch=1;u.rate=1;u.onerror=e=>{if(e.error==='canceled'||e.error==='interrupted')return;document.getElementById('voiceInfo').textContent='Suara '+v.voice.name+' gagal diputar. Coba tes atau pilih suara lain.';voiceAlert('Suara gagal diputar. Coba tes suara.');};speechSynthesis.speak(u);}catch(e){voiceAlert('Gagal memutar suara. Coba pilih suara lain.');}
+}
+soundMode.addEventListener('change',()=>{if('speechSynthesis' in window)speechSynthesis.cancel();refreshVoices();savePrefs()});
+nativeVoice.addEventListener('change',()=>{voiceByMode[soundMode.value]=nativeVoice.value;savePrefs();updateVoiceInfo()});
+volume.addEventListener('input',savePrefs);
+document.getElementById('reloadVoices').onclick=()=>{unlockAudio();refreshVoices()};
+if('speechSynthesis' in window)speechSynthesis.addEventListener('voiceschanged',refreshVoices);refreshVoices();
+const settings=document.getElementById('settings');document.getElementById('settingsBtn').onclick=()=>{unlockAudio();refreshVoices();settings.hidden=false};document.getElementById('closeSettings').onclick=()=>{settings.hidden=true};
 const fullBtn=document.getElementById('fullBtn');function syncFull(){const active=!!document.fullscreenElement||document.body.classList.contains('immersive');fullBtn.textContent=active?'↙':'⛶';fullBtn.title=active?'Keluar layar penuh':'Layar penuh';fullBtn.setAttribute('aria-label',fullBtn.title)}
 fullBtn.onclick=async()=>{if(document.fullscreenElement){await document.exitFullscreen();}else if(document.body.classList.contains('immersive')){document.body.classList.remove('immersive')}else{try{if(!document.documentElement.requestFullscreen)throw Error();await document.documentElement.requestFullscreen()}catch(e){document.body.classList.add('immersive')}}syncFull()};document.addEventListener('fullscreenchange',syncFull);
 let cooldown = new Map();
-if (INITIAL_CAMERA === 'user') select.value = 'user';
+select.value = INITIAL_CAMERA;
+applyPreview();
 function notify(type, detail={}) {
   if (!SESSION || !window.opener || window.opener.closed) return false;
   try {window.opener.postMessage({type, session:SESSION, ...detail}, '*'); return true;}catch(e){return false;}
@@ -116,7 +265,7 @@ async function cameraStream(){
 function stopCamera(){
  running=false;if(timer){clearInterval(timer);timer=null;}
  if(stream){stream.getTracks().forEach(t=>t.stop());stream=null;}
- video.pause();video.srcObject=null;video.hidden=true;
+ video.pause();video.srcObject=null;video.hidden=true;applyPreview();
  document.getElementById('reticle').hidden=true;
  hint.hidden=false;hint.textContent='Tekan Mulai kamera';
  document.getElementById('startBtn').disabled=false;
@@ -134,6 +283,7 @@ async function startCamera(){
  setBadge('Meminta izin kamera...');document.getElementById('startBtn').disabled=true;
  try{
   stream=await cameraStream();
+  applyPreview();
   video.srcObject=stream;video.hidden=false;
   await video.play();
   running=true;
@@ -143,7 +293,7 @@ async function startCamera(){
   document.getElementById('stopBtn').disabled=false;
   setBadge('Kamera aktif',false,true);
   notify('SEKOLAHAPP_QR_HELLO');
-  timer=setInterval(scanFrame,160);
+  timer=setInterval(scanFrame,100);
  }catch(e){
   stopCamera();
   const msg = e.name==='NotAllowedError'?'Akses kamera ditolak. Izinkan kamera pada pengaturan situs browser.':
@@ -157,7 +307,7 @@ async function decodeFrame(){
  if(detector){try{const found=await detector.detect(video);if(found.length&&found[0].rawValue)return String(found[0].rawValue).trim()}catch(e){}}
  if(typeof jsQR!=='function')return '';
  const max=900, scale=Math.min(1,max/Math.max(video.videoWidth,video.videoHeight));
- work.width=Math.round(video.videoWidth*scale);work.height=Math.round(video.videoHeight*scale);
+ const w=Math.round(video.videoWidth*scale),h=Math.round(video.videoHeight*scale);if(work.width!==w)work.width=w;if(work.height!==h)work.height=h;
  ctx.drawImage(video,0,0,work.width,work.height);
  const img=ctx.getImageData(0,0,work.width,work.height);
  const qr=jsQR(img.data,work.width,work.height,{inversionAttempts:'attemptBoth'});
@@ -173,36 +323,36 @@ function sendCode(raw){
  const now=Date.now();if(awaiting.has(token)||now-(cooldown.get(token)||0)<4000)return;
  cooldown.set(token,now);awaiting.add(token);
  
- if(!notify('SEKOLAHAPP_QR_SCAN',{token})){
+ if(!notify('SEKOLAHAPP_QR_SCAN',{token,tanggal:TANGGAL_SCAN})){
   awaiting.delete(token);setResult('QR berhasil terbaca (mode uji)','Tidak disimpan ke Google Sheets. Untuk absensi, buka scanner dari aplikasi utama.');announce('warn','QR terbaca — mode uji','','Belum tercatat hadir. Buka scanner dari SekolahApp.');return;
  }
- setResult('Memverifikasi...','Kode QR dikirim ke aplikasi absensi.');setBadge('Menunggu konfirmasi server');
- clearTimeout(replyTimer);replyTimer=setTimeout(()=>{if(awaiting.delete(token)){setResult('Belum ada konfirmasi','Periksa aplikasi utama dan Google Sheets.',true);announce('warn','Belum terkonfirmasi','','Periksa data sebelum memindai ulang.');}},30000);
+ submittedAt=performance.now();showPending(true);setResult('Memverifikasi...','Kode QR dikirim ke aplikasi absensi.');setBadge('Menunggu konfirmasi server');
+ clearTimeout(replyTimer);replyTimer=setTimeout(()=>{if(awaiting.delete(token)){showPending(false);document.getElementById('latencyInfo').textContent='Waktu konfirmasi: melebihi 30 detik.';setResult('Belum ada konfirmasi','Periksa aplikasi utama dan Google Sheets.',true);announce('warn','Belum terkonfirmasi','','Periksa data sebelum memindai ulang.');}},30000);
 }
 window.addEventListener('message',event=>{
  if(event.source!==window.opener || !event.data || event.data.session!==SESSION || !SESSION)return;
  const d=event.data;
  if(d.type==='SEKOLAHAPP_QR_ACK'&&d.token){return;}
  if(d.type==='SEKOLAHAPP_QR_RESULT'){
-   clearTimeout(replyTimer);awaiting.clear();
+   clearTimeout(replyTimer);showPending(false);if(awaiting.size&&submittedAt){document.getElementById('latencyInfo').textContent='Waktu konfirmasi terakhir: '+((performance.now()-submittedAt)/1000).toLocaleString('id-ID',{minimumFractionDigits:2,maximumFractionDigits:2})+' detik.';}awaiting.clear();submittedAt=0;
    const student=d.siswa||{};
    const name=String(student.nama || '').trim();
    const type=d.statusType;
    const title=type==='success'?'HADIR — ABSENSI BERHASIL':d.title||'Hasil scan';
-   announce(type,title,name,d.message||'');
+   announce(type,title,name,(d.message||'')+(LAMPAU?' — Tanggal absensi: '+TANGGAL_SCAN:''),false);
    setResult(title,[name,d.message].filter(Boolean).join(' — '));
    if(d.statusType==='success'){const frame=document.getElementById('reticle');frame.classList.add('hit');setTimeout(()=>frame.classList.remove('hit'),450);count++;document.getElementById('count').textContent=count;setBadge('Absensi tersimpan',false,true);}
-   else if(d.statusType==='warn'){setBadge('Sudah tercatat');}
+   else if(d.statusType==='warn'){setBadge(isAlreadyPresent(type,title)?'Sudah hadir':'Perhatian');}
    else if(d.statusType==='error'){setBadge('QR ditolak',true);}
  }
  if(d.type==='SEKOLAHAPP_QR_SWITCH_CAM'&&['environment','user'].includes(d.camera)){
    select.value=d.camera;startCamera();
  }
 });
-document.getElementById('testNotice').addEventListener('click',()=>{if(awaiting.size)return;unlockAudio();settings.hidden=true;announce('success','Simulasi hadir','Ahmad Fauzi','Tes tampilan saja. Tidak disimpan ke Google Sheets.');document.getElementById('noticeEyebrow').textContent='SIMULASI NOTIFIKASI';});
+document.getElementById('testNotice').addEventListener('click',()=>{if(awaiting.size||Date.now()<holdUntil)return;unlockAudio();refreshVoices();settings.hidden=true;const missing=soundMode.value!=='silent'&&!chooseVoice().voice;announce('success','Simulasi hadir',TEST_NAME,'Simulasi saja — tidak disimpan.'+(missing?' Suara pilihan belum tersedia.':''),true);});
 document.getElementById('startBtn').addEventListener('click',startCamera);
 document.getElementById('stopBtn').addEventListener('click',stopCamera);
-select.addEventListener('change',()=>{if(running)startCamera();});
+select.addEventListener('change',()=>{if(running)startCamera();else applyPreview();});
 document.getElementById('manual').addEventListener('submit',e=>{e.preventDefault();sendCode(document.getElementById('manualCode').value);document.getElementById('manualCode').value='';});
 document.getElementById('photo').addEventListener('change',async e=>{
  const file=e.target.files?.[0];e.target.value='';if(!file)return;
